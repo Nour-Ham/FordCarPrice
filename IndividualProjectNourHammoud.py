@@ -11,7 +11,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import joblib
-df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+df = pd.read_csv("ford.csv")
 
 ############################################## STREAMLIT ############################################3
 st.set_page_config(
@@ -109,7 +109,7 @@ def DescriptiveGeneral ():
             
 
 def DescriptiveSpecific():
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
     st.title("Variation Of Price with variables")
     ax1,ax2 = st.columns(2)
 
@@ -163,7 +163,7 @@ def DescriptiveSpecific():
    
 def Analysis():              
     ################################# ML CODE##############################
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -253,7 +253,7 @@ def Predictor():
     ###################################### Creating the model ####################
     ## Title
     st.header("Ford Cars Price Predictor")
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -317,7 +317,7 @@ def Predictor():
         return features
     
     input_df = user_input_features()    
-    cars = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    cars = pd.read_csv("ford.csv")
     cars.fillna(0, inplace=True)
     cars = cars.drop(columns=['price'])
 
