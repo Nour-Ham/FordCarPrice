@@ -272,7 +272,7 @@ def Analysis():
     if Plot == "LinearRegression": 
        st.pyplot(sns.scatterplot(x = y_test,y = LR()).figure, figsize= (2, 2))
 def Predictor():
-st.header("Ford Cars Price Predictor")
+    st.header("Ford Cars Price Predictor")
     df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
