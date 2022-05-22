@@ -253,9 +253,8 @@ def Analysis():
  
     kpi4.metric("MAE of DTR Model",round(DTR_mae(),4))
    
-    kpi1.metric("MSE of LR Model 10^16",int(LR_mse()/1000000000000000))
-
-    kpi2.metric("MAE of LR Model X 10^4 ",int(LR_mae()/10000))
+    kpi1.metric("MSE of LR Model ",round(LR_mse(),4))
+    kpi2.metric("MAE of LR Model ",round(LR_mae(),4)
     
     kpi5.metric("MSE of RFR Model",round(RFR_mse(),4))
     
