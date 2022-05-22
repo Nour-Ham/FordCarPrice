@@ -15,7 +15,7 @@ st.set_page_config(
     layout ="wide")
     
 
-df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+df = pd.read_csv("ford.csv")
 
 st.markdown(
     '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">',
@@ -114,7 +114,7 @@ elif active_tab == "DescriptiveGeneral":
             st.caption("**Petrol and Diesel fuel type cars are sold the most**") 
 
 elif active_tab == "DescriptiveSpecific":
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
     st.title("Variation Of Price with variables")
     ax1,ax2 = st.columns(2)
 
@@ -165,7 +165,7 @@ elif active_tab == "DescriptiveSpecific":
 
 
 elif active_tab == "Analysis":
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -276,7 +276,7 @@ elif active_tab == "Analysis":
        st.pyplot(sns.scatterplot(x = y_test,y = LR()).figure, figsize= (2, 2))
 elif active_tab == "Predictor":
     st.header("Ford Cars Price Predictor")
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -345,7 +345,7 @@ elif active_tab == "Predictor":
         
         
       
-    cars = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    cars = pd.read_csv("ford.csv")
     cars.fillna(0, inplace=True)
     cars = cars.drop(columns=['price'])
     df = pd.concat([features,cars],axis=0)
