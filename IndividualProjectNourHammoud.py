@@ -1,48 +1,56 @@
-import streamlit as st 
-#import plotly.expressiconda  as px  # interactive charts
+import streamlit as st
 import numpy as np 
 import pandas as pd 
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-import joblib
-df = pd.read_csv("ford.csv")
-
-############################################## STREAMLIT ############################################3
 st.set_page_config(
     page_title="Ford Price Prediction",
     layout ="wide")
     
-# ----------- Sidebar-----------------
-def main():
-    page = st.sidebar.selectbox(
-        "Select a Page",
-        [
-            "Homepage",
-           "DescriptiveGeneral", 
-           "DescriptiveSpecific",
-           "Analysis",
-           "Predictor"
-        ]
-    )
 
-    if page == "Homepage":
-        Homepage()
-    if page == "DescriptiveGeneral":
-        DescriptiveGeneral()
-    if page == "DescriptiveSpecific":
-        DescriptiveSpecific()
-    if page == "Predictor":
-        Predictor()
-    if page == "Analysis":
-        Analysis()
+df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
 
-def Homepage():
+st.markdown(
+    '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">',
+    unsafe_allow_html=True,
+)
+query_params = st.experimental_get_query_params()
+
+tabs = ["Home", "DescriptiveGeneral", "DescriptiveSpecific", "Analysis", "Predictor"]
+if "tab" in query_params:
+    active_tab = query_params["tab"][0]
+else:
+    active_tab = "Home"
+
+if active_tab not in tabs:
+    st.experimental_set_query_params(tab="Home")
+    active_tab = "Home"
+
+li_items = "".join(
+    f"""
+    <li class="nav-item">
+        <a class="nav-link{' active' if t==active_tab else ''}" href="/?tab={t}">{t}</a>
+    </li>
+    """
+    for t in tabs
+)
+tabs_html = f"""
+    <ul class="nav nav-tabs">
+    {li_items}
+    </ul>
+"""
+
+st.markdown(tabs_html, unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+if active_tab == "Home":
     st.title("""
         Ford Price Predictor""")
     spectra = st.file_uploader("Upload Your File!", type={"csv", "txt"})
@@ -54,8 +62,8 @@ def Homepage():
         st.caption ("Data Types in our dataset:")
         st.caption("Categorical: model, transmission, fuel type")
         st.caption("Numerical: price, mileage, tax, mpg, engineSize,year")
-
-def DescriptiveGeneral ():
+        
+elif active_tab == "DescriptiveGeneral":
     st.title("General Overview") 
 
 # create Six columns
@@ -105,11 +113,8 @@ def DescriptiveGeneral ():
             st.pyplot((sns.countplot(y='fuelType', data=df,  color = "lightskyblue")).figure)
             st.caption("**Petrol and Diesel fuel type cars are sold the most**") 
 
-
-            
-
-def DescriptiveSpecific():
-    df = pd.read_csv("ford.csv")
+elif active_tab == "DescriptiveSpecific":
+    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
     st.title("Variation Of Price with variables")
     ax1,ax2 = st.columns(2)
 
@@ -159,10 +164,8 @@ def DescriptiveSpecific():
                 st.caption("**Automatic and Semi-auto transmissions cars are the highest priced cars** ")
 
 
-      
-   
-def Analysis():              
-    df = pd.read_csv("ford.csv")
+elif active_tab == "Analysis":
+    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -253,8 +256,9 @@ def Analysis():
  
     kpi4.metric("MAE of DTR Model",round(DTR_mae(),4))
    
-    kpi1.metric("MSE of LR Model ",round(LR_mse(),4))
-    kpi2.metric("MAE of LR Model ",round(LR_mae(),4))
+    kpi1.metric("MSE of LR Model 10^16",int(LR_mse()/1000000000000000))
+
+    kpi2.metric("MAE of LR Model X 10^4 ",int(LR_mae()/10000))
     
     kpi5.metric("MSE of RFR Model",round(RFR_mse(),4))
     
@@ -270,9 +274,9 @@ def Analysis():
         st.pyplot(sns.scatterplot(x = y_test,y = RFR()).figure, figsize= (2, 2))
     if Plot == "LinearRegression": 
        st.pyplot(sns.scatterplot(x = y_test,y = LR()).figure, figsize= (2, 2))
-def Predictor():
+elif active_tab == "Predictor":
     st.header("Ford Cars Price Predictor")
-    df = pd.read_csv("ford.csv")
+    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -341,7 +345,7 @@ def Predictor():
         
         
       
-    cars = pd.read_csv("ford.csv")
+    cars = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
     cars.fillna(0, inplace=True)
     cars = cars.drop(columns=['price'])
     df = pd.concat([features,cars],axis=0)
@@ -384,8 +388,10 @@ def Predictor():
     if st.button("Get me the Price"):
         result = prediction
         st.success('The Car is for $ {}'.format(result))
-if __name__ == "__main__":
-   main() 
+else:
+    st.error("Something has gone terribly wrong.")
+
+
    
 
 # ---- HIDE STREAMLIT STYLE ----
