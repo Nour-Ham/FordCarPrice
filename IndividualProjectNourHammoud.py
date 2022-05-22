@@ -11,7 +11,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import joblib
-df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+df = pd.read_csv("ford.csv")
 
 ############################################## STREAMLIT ############################################3
 st.set_page_config(
@@ -109,7 +109,7 @@ def DescriptiveGeneral ():
             
 
 def DescriptiveSpecific():
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    df = pd.read_csv("ford.csv")
     st.title("Variation Of Price with variables")
     ax1,ax2 = st.columns(2)
 
@@ -162,111 +162,7 @@ def DescriptiveSpecific():
       
    
 def Analysis():              
-    ################################# ML CODE##############################
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
-#Check if there are any null values.
-    df.isnull().sum()
-#Step 1:Get the IRQ
-    IQR_price= df['price'].quantile(q=.75)- df['price'].quantile(q=.25)
-#Step 2: Get The upper and lower bound for the price column 
-    price_lower_bound =df['price'].quantile(q=.25) - 1.5 * IQR_price
-    price_upper_bound = df['price'].quantile(q=.75)+ 1.5 * IQR_price
-    print(price_lower_bound,price_upper_bound)
-
-#Step 3: Remoce outliers from the price column 
-    df = df[(df['price'] > price_lower_bound) & (df['price'] < price_upper_bound)]
-
-#transform the categorical variables into dummy
-    dummies = pd.get_dummies(df.model)
-    dummies2 = pd.get_dummies(df.transmission)
-    dummies3 = pd.get_dummies(df.fuelType)
-    dummies4 = pd.get_dummies(df.year)
-#Join new columns in one dataset
-    df2 = pd.concat([df,dummies,dummies2,dummies3, dummies4],axis=1)
-#Let's drop the old columns.
-    df2 = df2.drop(['model','transmission','fuelType'],axis=1)
-#Index Reseting
-    df2 = df2.reset_index(drop=True)
-    df=df2
-#Scaling Data -  MinMaxScaler preserves the shape of the original distribution.
-    mms = MinMaxScaler()
-    inputs = ['price','year','mileage','tax','mpg','engineSize']
-    df[inputs] = mms.fit_transform(df[inputs])
-#Variables
-    x = df.drop('price',axis=1)
-    y= df.price
-#Splitting data 
-    x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42)
-    #@st.cache()
-    #def model_train():
-     #   all_models = [LinearRegression(),RandomForestRegressor(),DecisionTreeRegressor()]
-      #  scores = []
-       # for i in all_models:
-        #    model = i
-        #    model.fit(x_train,y_train)
-        #    y_predicted = model.predict(x_test)
-        #    mse = mean_squared_error(y_test,y_predicted)
-        ##    mae = mean_absolute_error(y_test,y_predicted)
-        #    scores.append({
-        #        'model': i,
-        #        'mean_squared_error':mse,
-        #        'mean_absolute_error':mae
-   # })
-    #    return pd.DataFrame(scores,columns=['model','mean_squared_error','mean_absolute_error'])
-    #model_train()
-    #st.text(model_train())
-    
-   # DTR = DecisionTreeRegressor()
-   # DTR.fit(x_train,y_train)
-   # y_predicted_DTR= DTR.predict(x_test)
-   # mse_DTR = mean_squared_error(y_test,y_predicted_DTR)
-   # mae_DTR = mean_absolute_error(y_test,y_predicted_DTR)
-        
-    #LR = LinearRegression()
-    #LR.fit(x_train,y_train)        
-    #y_predicted_LR= LR.predict(x_test)
-    
-    #mse_LR = mean_squared_error(y_test,y_predicted_LR)
-    #mae_LR = mean_absolute_error(y_test,y_predicted_LR)
-
-    #RFR = RandomForestRegressor()
-    #RFR.fit(x_train,y_train)        
-    #y_predicted_RFR= RFR.predict(x_test)
-    
-    #mse_RFR = mean_squared_error(y_test,y_predicted_RFR)
-    #mae_RFR = mean_absolute_error(y_test,y_predicted_RFR)
-    
-    
-    #kpi3,kpi4,kpi1,kpi2,kpi5,kpi6= st.columns(6)
-    
-   # kpi3.metric("MSE of DTR Model",round(mse_DTR, 4))
- 
-    #kpi4.metric("MAE of DTR Model",round(mae_DTR,4))
-   
-  #  kpi1.metric("MSE of LR Model x10^16",int(mse_LR/1000000000000000))
-
-   # kpi2.metric("MAE of LR Model x 10^4",int(mae_LR/10000))
-    
-   # kpi5.metric("MSE of RFR Model",round(mse_RFR, 4))
-    
-   # kpi5.metric("MAE of RFR Model",round(mae_RFR, 4))
-        
- 
-    Plot = st.radio("Model Plots", ["DecisionTreeRegressor","LinearRegression"])
-    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;justify-content: center}</style>', unsafe_allow_html=True)
-    st.markdown("**Decision Tree Regressor have the lowest error and has a better fit**")
-    st.markdown("**It will be used in our prediction**")  
-         
-    if Plot == "DecisionTreeRegressor":
-        st.pyplot(sns.scatterplot(x = y_test,y = y_predicted_DTR).figure, figsize= (2, 2))
-    if Plot == "LinearRegression": 
-        st.pyplot(sns.scatterplot(x = y_test,y = y_predicted_LR).figure, figsize= (2, 2))
- 
-def Predictor():
-    ###################################### Creating the model ####################
-    ## Title
-    st.header("Ford Cars Price Predictor")
-    df = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+ df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
@@ -292,57 +188,163 @@ def Predictor():
     df=df2
 #Scaling Data -  MinMaxScaler preserves the shape of the original distribution.
     mms = MinMaxScaler()
-    inputs = ['year','price','mileage','tax','mpg','engineSize']
+    inputs = ['price','year','mileage','tax','mpg','engineSize']
     df[inputs] = mms.fit_transform(df[inputs])
 #Variables
     x = df.drop('price',axis=1)
     y= df.price
 #Splitting data 
     x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42)
-    DTR = DecisionTreeRegressor()
-    DTR.fit(x_train,y_train)
-    
+    @st.cache()
+    def RFR():
+        RF= RandomForestRegressor(n_estimators=10, min_samples_leaf=0.05)
+        RF.fit(x_train, y_train)
+        return RF.predict(x_test)
+    @st.cache()
+    def RFR_mse():
+        RF= RandomForestRegressor(n_estimators=10, min_samples_leaf=0.05)
+        RF.fit(x_train, y_train)
+        y_pred_RFR = RF.predict(x_test)
+        return mean_squared_error(y_test,y_pred_RFR)
+    @st.cache()
+    def RFR_mae():
+        RF= RandomForestRegressor(n_estimators=10, min_samples_leaf=0.05)
+        RF.fit(x_train, y_train)
+        y_pred_RFR = RF.predict(x_test)
+        return mean_absolute_error(y_test,y_pred_RFR)
+    @st.cache()
+    def DTR():
+        DTR = DecisionTreeRegressor()
+        DTR.fit(x_train,y_train)
+        return DTR.predict(x_test)
+    @st.cache()
+    def DTR_mae():
+        DTR = DecisionTreeRegressor()
+        DTR.fit(x_train,y_train)
+        y_pred_DTR = DTR.predict(x_test)
+        return mean_absolute_error(y_test,y_pred_DTR) 
+    @st.cache()
+    def DTR_mse():
+        DTR = DecisionTreeRegressor()
+        DTR.fit(x_train,y_train)
+        y_pred_DTR = DTR.predict(x_test)
+        return mean_squared_error(y_test,y_pred_DTR)
     @st.cache() 
-    def predicted_predicted():
+    def LR():
         LR = LinearRegression()
         LR.fit(x_train,y_train)        
-        return LR
-    predicted_predicted
-    # pickling the model
-    import pickle
-    pickle_out = open("LR.pkl", "wb")
-    pickle.dump(LR, pickle_out)
-    pickle_out.close()
-    # loading in the model to predict on the data
-    pickle_in = open('LR.pkl', 'rb')
-    LR= pickle.load(pickle_in)
+        return LR.predict(x_test)
+    @st.cache() 
+    def LR_mse():
+        LR = LinearRegression()
+        LR.fit(x_train,y_train)        
+        y_pred_LR= LR.predict(x_test)
+        return mean_squared_error(y_test,y_pred_LR) 
+    @st.cache() 
+    def LR_mae():
+        LR = LinearRegression()
+        LR.fit(x_train,y_train)        
+        y_pred_LR= LR.predict(x_test)
+        return mean_absolute_error(y_test,y_pred_LR) 
+    #int(DTR_mae())
+    kpi3,kpi4,kpi1,kpi2,kpi5,kpi6= st.columns(6)
+    
+    kpi3.metric("MSE of DTR Model",round(DTR_mse(),4))
+ 
+    kpi4.metric("MAE of DTR Model",round(DTR_mae(),4))
+   
+    kpi1.metric("MSE of LR Model 10^16",int(LR_mse()/1000000000000000))
 
+    kpi2.metric("MAE of LR Model X 10^4 ",int(LR_mae()/10000))
+    
+    kpi5.metric("MSE of RFR Model",round(RFR_mse(),4))
+    
+    kpi6.metric("MAE of RFR Model",round(RFR_mae(),4))
+    
+    Plot = st.radio("Model Plots", ["RandomForestRegressor","DecisionTreeRegressor","LinearRegression"])
+    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;justify-content: center}</style>', unsafe_allow_html=True)
+         
+
+    if Plot == "DecisionTreeRegressor":
+       st.pyplot(sns.scatterplot(x = y_test,y = DTR()).figure, figsize= (2, 2))
+    if Plot == "RandomForestRegressor":
+        st.pyplot(sns.scatterplot(x = y_test,y = RFR()).figure, figsize= (2, 2))
+    if Plot == "LinearRegression": 
+       st.pyplot(sns.scatterplot(x = y_test,y = LR()).figure, figsize= (2, 2))
+def Predictor():
+st.header("Ford Cars Price Predictor")
+    df = pd.read_csv("ford.csv")
+#Check if there are any null values.
+    df.isnull().sum()
+#Step 1:Get the IRQ
+    IQR_price= df['price'].quantile(q=.75)- df['price'].quantile(q=.25)
+#Step 2: Get The upper and lower bound for the price column 
+    price_lower_bound =df['price'].quantile(q=.25) - 1.5 * IQR_price
+    price_upper_bound = df['price'].quantile(q=.75)+ 1.5 * IQR_price
+    print(price_lower_bound,price_upper_bound)
+
+#Step 3: Remoce outliers from the price column 
+    df = df[(df['price'] > price_lower_bound) & (df['price'] < price_upper_bound)]
+
+#transform the categorical variables into dummy
+    dummies = pd.get_dummies(df.model)
+    dummies2 = pd.get_dummies(df.transmission)
+    dummies3 = pd.get_dummies(df.fuelType)
+#Join new columns in one dataset
+    df2 = pd.concat([df,dummies,dummies2,dummies3],axis=1)
+#Let's drop the old columns.
+    df2 = df2.drop(['model','transmission','fuelType'],axis=1)
+#Index Reseting
+    df2 = df2.reset_index(drop=True)
+    df=df2
+#Scaling Data -  MinMaxScaler preserves the shape of the original distribution.
+#mms = MinMaxScaler()
+#inputs = ['year','price','mileage','tax','mpg','engineSize']
+#df[inputs] = mms.fit_transform(df[inputs])
+#Variables
+    x = df.drop('price',axis=1)
+    y= df.price
+#Splitting data 
+    x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42)
+    @st.cache(allow_output_mutation=True)
+    def RFR():
+        RFR= RandomForestRegressor(n_estimators=10, min_samples_leaf=0.05)
+        RFR=RFR.fit(x, y)
+        return RFR
+    # loading in the model to predict on the data
+    import pickle
+    pickle_out = open("RFR.pkl", "wb")
+    pickle.dump(RFR, pickle_out)
+    pickle_out.close()
+    # loading in the model to predict on the data    
+    pickle_in = open('RFR.pkl', 'rb')
+    RFR= pickle.load(pickle_in)
+    
     ax1,ax2 = st.columns(2)
     with ax1:
-        year = st.slider('Year The Car Manufatured', 1996,2020)
-        model = st.selectbox('model',('Fiesta',' Fiesta','Focus','Kuga','EcoSport','C-MAX','Ka+','Mondeo','B-MAX',
+            year = st.slider('Year The Car Manufatured', 1996,2020)
+            model = st.selectbox('model',('Fiesta',' Fiesta','Focus','Kuga','EcoSport','C-MAX','Ka+','Mondeo','B-MAX',
                                   'S-MAX','Grand C-MAX','Galaxy','Edge','KA','Puma','Tourneo Custom','Grand Tourneo Connect','Mustang','Tourneo Connect',
                                   'Fusion','Streetka','Ranger','Transit Tourneo','Escort','Focus','Transit Tourneo'))
-        transmission = st.selectbox('transmission', ('Manual','Automatic','Semi-Auto'))
+            transmission = st.selectbox('transmission', ('Manual','Automatic','Semi-Auto'))
         
-        mileage = st.slider('How many mileage?', 0,18000) 
+            mileage = st.slider('How many mileage?', 0,18000) 
     with ax2:
         fuelType= st.selectbox('fuelType', ('Petrol','Diesel','Hybrid','Electric','Other'))
         tax= st.slider('Tax Amount', 0, 600)
         mpg = st.slider('MPG', 0, 250)
         engineSize =  st.slider('engineSize', 0, 5)
         
-    data = {'year':[year],'model':[model],'transmission':[transmission], 
+        data = {'year':[year],'model':[model],'transmission':[transmission], 
                 'fuelType':[fuelType],'mileage':[mileage],'mpg':[mpg],'engineSize':[engineSize], 
                 'tax':[tax],}
-    features = pd.DataFrame(data)
+        features = pd.DataFrame(data)
         
         
       
-    cars = pd.read_csv("C:/Users/nourh/OneDrive/Desktop/streamlitapp/ford.csv")
+    cars = pd.read_csv("ford.csv")
     cars.fillna(0, inplace=True)
     cars = cars.drop(columns=['price'])
-
     df = pd.concat([features,cars],axis=0)
     #df = input_df
     
@@ -377,13 +379,12 @@ def Predictor():
 
     #df= df.reindex(df)
     #df = df.loc[:,~df.columns.duplicated()]
-    prediction = LR.predict(df)   
+    prediction = RFR().predict(df)   
 
     # If button is pressed
     if st.button("Get me the Price"):
-         result = prediction
-         st.success('The Car is for $ {}'.format(result))
-   
+        result = prediction
+        st.success('The Car is for $ {}'.format(result))
 if __name__ == "__main__":
    main() 
    
