@@ -162,7 +162,7 @@ def DescriptiveSpecific():
       
    
 def Analysis():              
- df = pd.read_csv("ford.csv")
+    df = pd.read_csv("ford.csv")
 #Check if there are any null values.
     df.isnull().sum()
 #Step 1:Get the IRQ
